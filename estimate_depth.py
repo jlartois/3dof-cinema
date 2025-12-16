@@ -27,6 +27,9 @@ far = 20
 output_folder = "out/"    # directory in which to write the depth maps
 #########################################
 
+if not (equirectangular_res[0] % 2 == 0) and (equirectangular_res[1] % 2 == 0):
+    raise AssertionError("YUV420 requires even equirectangular_res")
+    
 focal = pinhole_res * 0.5  # focal length (pixels) of cubemap pinnhole camera
 
 videos = [cv2.VideoCapture(p) for p in paths]
@@ -67,8 +70,8 @@ try:
         bot_depth_norm = equirect_from_cubemap_lfrb(bot_depth_norm, pinhole_res, equirectangular_res[0], equirectangular_res[1], fov)
 
         # save as 16-bit greyscale image
-        cv2.imwrite(os.path.join(output_folder, "top_depth{:04d}.png".format(frame)), top_depth_norm)
-        cv2.imwrite(os.path.join(output_folder, "bot_depth{:04d}.png".format(frame)), bot_depth_norm)
+        save_uint16_to_yuv420p16le(os.path.join(output_folder, "top_depth.yuv"), top_depth_norm, frame > 0)
+        save_uint16_to_yuv420p16le(os.path.join(output_folder, "bot_depth.yuv"), bot_depth_norm, frame > 0)
 
         print("frame", frame, "done")
         frame += 1

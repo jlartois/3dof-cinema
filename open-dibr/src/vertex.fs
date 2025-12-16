@@ -53,9 +53,6 @@ void main()
 
 	// convert to depth in [near, far] (in meters) by scaling with near and far planes
 	depth = 1.0 / (1.0f / near_far[1] + depth * ( 1.0f / near_far[0] - 1.0f / near_far[1]));
-	if(depth > near_far[1] - 0.1f){
-		depth = out_near_far[1] - 5;
-	}
 	vertex.inputDepth = depth;
 
 	// unproject to find the worldPosition of the current pixel

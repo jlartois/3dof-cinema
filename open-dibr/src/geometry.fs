@@ -48,10 +48,10 @@ void main()
 	// discard triangles that fall outside the fisheye image of the input camera (if relevant)
 	bool condition2 = !(vertices[0].worldPosition.w < 0 || vertices[1].worldPosition.w < 0 || vertices[2].worldPosition.w < 0);
 
-	float occlusion_thresh = 0.51f;
+	float occlusion_thresh = near_far[0] + 0.1f;
 	bool condition3 = vertices[0].inputDepth < occlusion_thresh || vertices[1].inputDepth < occlusion_thresh || vertices[2].inputDepth < occlusion_thresh;
 
-	bool condition4 = (length(vertices[0].uv - vertices[1].uv) < 0.5f) && (length(vertices[1].uv - vertices[2].uv) < 0.5f) && (length(vertices[0].uv - vertices[2].uv) < 0.5f);
+	bool condition4 = (out_projection_type < 0.2f) || (out_projection_type > 0.7f) || (length(vertices[0].uv - vertices[1].uv) < 0.5f) && (length(vertices[1].uv - vertices[2].uv) < 0.5f) && (length(vertices[0].uv - vertices[2].uv) < 0.5f);
 
 	// pass the triangle to the fragment shader iff all conditions are true
 	if(condition1 && condition2 && !condition3 && condition4){ 

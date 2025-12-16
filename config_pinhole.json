@@ -1,0 +1,42 @@
+{
+    "Axial_system": "COLMAP",
+	"Number_of_frames": 250,
+    "cameras": [
+        {
+            "NameColor": "viewport",
+            "Position": [0.0, 0.0, 0.0],
+            "Rotation": [0.0, 0.0, 0.0],
+            "Depth_range": [0.2, 100.0],
+            "Resolution": [1920, 1080],
+            "Projection": "Perspective",
+			"Focal": [960.0, 960.0],
+			"Principle_point": [960.0, 540.0]
+        },
+        {
+            "NameColor": "class_dynamic_top.mp4",
+            "NameDepth": "top_depth.mp4",
+            "Position": [0.0, -0.1, 0.0 ],
+            "Rotation": [0.0, 0.0, 0.0],
+            "Depth_range": [0.5, 20.0],
+            "Resolution": [4096, 2048],
+            "Projection": "Equirectangular",
+            "Hor_range": [-180, 180],
+            "Ver_range": [-90, 90],
+            "BitDepthColor": 8,
+            "BitDepthDepth": 16
+        },
+        {
+            "NameColor": "class_dynamic_bot.mp4",
+            "NameDepth": "bot_depth.mp4",
+            "Position": [0.0, 0.1, 0.0 ],
+            "Rotation": [0.0, 0.0, 0.0],
+            "Depth_range": [0.5, 20.0],
+            "Resolution": [4096, 2048],
+            "Projection": "Equirectangular",
+            "Hor_range": [-180, 180],
+            "Ver_range": [-90, 90],
+            "BitDepthColor": 8,
+            "BitDepthDepth": 16
+        }
+    ]
+}

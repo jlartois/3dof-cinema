@@ -10,7 +10,7 @@ The camera rig consists of two 360° cameras stacked one on top of the other. We
 python estimate_depth.py
 ```
 
-The file allows to set parameters, rather than expecting command line arguments. The output depth maps are written to `out/` as `uint16`/`gray16be` PNGs.
+The file allows to set parameters, rather than expecting command line arguments. For example, you can enable the Weighted Least Squares filter using variable `use_wls`. The output depth maps are written to `out/top_depth.yuv` and `out/bot_depth.yuv` as `yuv420p16le` .
 
 **Important notes:**
 
@@ -26,13 +26,47 @@ The file allows to set parameters, rather than expecting command line arguments.
 
 * During the disparity estimation, two masks are created: one indicating pixels with **infinite depth** (disparity 0), and one indicating pixels that were **occluded and have no depth** (disparity < 0). In the saved depth maps, the pixels with infinite depth are set to 65535, and the occluded pixels are set to 0. During DIBR, these values need to be handled accordingly (depth = 0 means discard pixels, depth = 65535 means infinite depth).
 
-## Depth-Image-Based Rendering (DIBR)
-
-Firstly convert the depth map PNGs to videos using ffmpeg:
+Lastly convert the depth map .yuv files to videos using ffmpeg:
 
 ```bash
-ffmpeg -framerate 25 -i out\top_depth%04d.png -c:v libx265 -x265-params lossless=1:bframes=0 -preset slow -an -pix_fmt yuv420p12le top_depth.mp4
-ffmpeg -framerate 25 -i out\bot_depth%04d.png -c:v libx265 -x265-params lossless=1:bframes=0 -preset slow -an -pix_fmt yuv420p12le bot_depth.mp4
+ffmpeg -hide_banner -s:v 4096x2048 -r 25 -pix_fmt yuv420p16le -i out\top_depth.yuv -c:v libx265 -x265-params lossless=1:bframes=0 -preset slow -an -pix_fmt yuv420p12le top_depth.mp4
+ffmpeg -hide_banner -s:v 4096x2048 -r 25 -pix_fmt yuv420p16le -i out\bot_depth.yuv -c:v libx265 -x265-params lossless=1:bframes=0 -preset slow -an -pix_fmt yuv420p12le bot_depth.mp4
 ```
 
-Note that **lossless** compression is applied, and that the `uint16` depth maps are converted to **`yuv420p12le`**. This was the maximum bit depth allowed by HEVC/H265 for OpenDIBR when testing.
+Note that **lossless** compression is applied, and that the `yuv420p16le` depth maps are converted to **`yuv420p12le`**. This was the maximum bit depth allowed by HEVC/H265 for OpenDIBR when testing.
+
+## OpenDIBR
+
+Folder `open-dibr` contains a modified version of [OpenDIBR](https://github.com/IDLabMedia/open-dibr). The same requirements as that repo apply:
+
+- A C++11 capable compiler. The following options have been tested:
+  - Windows: Visual Studio 2019
+  - Ubuntu 18.04 LTS: gcc, g++
+- CMake 3.7 or higher
+- An NVidia GPU that supports hardware accelerated decoding for H265 4:2:0 (preferably up to 12-bit), [check your GPU here](https://en.wikipedia.org/wiki/Nvidia_NVDEC#GPU_support)
+- [CUDA Toolkit 10.2 or higher](https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html#installing-cuda-development-tools)
+- [NVidia Video Codec SDK](https://developer.nvidia.com/nvidia-video-codec-sdk)
+
+If you want to use Virtual Reality:
+
+- Steam and SteamVR
+- The following HMDs have been tested:
+  - HTC Vive
+  - HTV Vive Pro
+  - Oculus Rift S
+
+For Linux systems, there are several dependencies on libraries that need to be installed: FFmpeg, OpenGL, GLEW and SDL2. For example on Ubuntu:
+
+```
+sudo apt update
+sudo apt install -y pkg-config libavcodec-dev libavformat-dev libavutil-dev libswresample-dev libglew-dev libsdl2-2.0
+```
+
+Use CMake to compile and build an executable. Then run one of these commands:
+
+```bash
+"path/to/RealtimeDIBR.exe" -i "./" -j "config_pinhole.json" --triangle_deletion_margin 400
+"path/to/RealtimeDIBR.exe" -i "./" -j "config_eq.json" --triangle_deletion_margin 400
+```
+
+depending on wether you want a pinhole or equirectangular output camera. We refer to the [OpenDIBR Wiki](https://github.com/IDLabMedia/open-dibr/wiki/Running-the-application) for more info on command line options etc.

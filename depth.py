@@ -104,3 +104,14 @@ def normalize_depth_to_uint16(depth, near, far):
     depth_norm[is_inf_depth] = 0
     
     return depth_norm
+    
+def save_uint16_to_yuv420p16le(filename, img, is_append):
+    H, W = img.shape
+    Y = img
+    U = np.full((H // 2, W // 2), 32768, dtype=np.uint16)
+    V = np.full((H // 2, W // 2), 32768, dtype=np.uint16)
+
+    with open(filename, "wb" if not is_append else "ab") as f:
+        Y.tofile(f)
+        U.tofile(f)
+        V.tofile(f)
