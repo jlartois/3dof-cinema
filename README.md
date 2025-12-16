@@ -25,3 +25,14 @@ The file allows to set parameters, rather than expecting command line arguments.
   So `depth_16b` is inversely proportional to `depth_m`. This is intentional as to increase the precision for smaller depth values. Depth range `[near, far]` is chosen by the user. Note that `65535 = 2^16 - 1`.
 
 * During the disparity estimation, two masks are created: one indicating pixels with **infinite depth** (disparity 0), and one indicating pixels that were **occluded and have no depth** (disparity < 0). In the saved depth maps, the pixels with infinite depth are set to 65535, and the occluded pixels are set to 0. During DIBR, these values need to be handled accordingly (depth = 0 means discard pixels, depth = 65535 means infinite depth).
+
+## Depth-Image-Based Rendering (DIBR)
+
+Firstly convert the depth map PNGs to videos using ffmpeg:
+
+```bash
+ffmpeg -framerate 25 -i out\top_depth%04d.png -c:v libx265 -x265-params lossless=1:bframes=0 -preset slow -an -pix_fmt yuv420p12le top_depth.mp4
+ffmpeg -framerate 25 -i out\bot_depth%04d.png -c:v libx265 -x265-params lossless=1:bframes=0 -preset slow -an -pix_fmt yuv420p12le bot_depth.mp4
+```
+
+Note that **lossless** compression is applied, and that the `uint16` depth maps are converted to **`yuv420p12le`**. This was the maximum bit depth allowed by HEVC/H265 for OpenDIBR when testing.
