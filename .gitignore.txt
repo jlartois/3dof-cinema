@@ -1,0 +1,6 @@
+class_dynamic_back.mp4
+class_dynamic_bot.mp4
+class_dynamic_front.mp4
+class_dynamic_left.mp4
+class_dynamic_right.mp4
+class_dynamic_top.mp4
