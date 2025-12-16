@@ -5,3 +5,4 @@ class_dynamic_left.mp4
 class_dynamic_right.mp4
 class_dynamic_top.mp4
 out/*
+__pycache__
