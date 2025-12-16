@@ -37,6 +37,8 @@ Note that **lossless** compression is applied, and that the `yuv420p16le` depth 
 
 ## OpenDIBR
 
+The scene can now be displayed in real-time using DIBR. The input is the original color videos, and the estimated depth map videos. There is also a `config_eq.json` and `config_pinhole.json` which describe the intrinsics and extrinsics of the input camera, and the viewport (the output camera).
+
 Folder `open-dibr` contains a modified version of [OpenDIBR](https://github.com/IDLabMedia/open-dibr). The same requirements as that repo apply:
 
 - A C++11 capable compiler. The following options have been tested:
