@@ -4,7 +4,7 @@ class_dynamic_front.mp4
 class_dynamic_left.mp4
 class_dynamic_right.mp4
 class_dynamic_top.mp4
-out/*
+out/*.png
 __pycache__
 open-dibr/bin
 open-dibr/build
