@@ -1,6 +1,6 @@
 # 3DOF+ Cinema
 
-**In short:** Create 3DoF+ experiences using two 360° cameras (stacked on on top of the other), stereo depth estimation ([OpenCV SGBM]([OpenCV: cv::StereoSGBM Class Reference](https://docs.opencv.org/3.4/d2/d85/classcv_1_1StereoSGBM.html))) and Depth-Image-Based rendering ([OpenDIBR]([IDLabMedia/open-dibr](https://github.com/IDLabMedia/open-dibr))).
+**In short:** Create 3DoF+ experiences using two 360° cameras (stacked on on top of the other), stereo depth estimation ([OpenCV SGBM](https://docs.opencv.org/3.4/d2/d85/classcv_1_1StereoSGBM.html)) and Depth-Image-Based rendering ([OpenDIBR](https://github.com/IDLabMedia/open-dibr)).
 
 ## 360° stereo depth estimation
 
